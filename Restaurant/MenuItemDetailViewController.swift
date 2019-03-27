@@ -35,6 +35,7 @@ class MenuItemDetailViewController: ViewController {
     }
     */
     
+    
     @IBAction func orderButtonTapped(_ sender: UIButton) {
         UIView.animate(withDuration: 0.3) {
             self.addToOrderButton.transform =
@@ -48,6 +49,14 @@ class MenuItemDetailViewController: ViewController {
         titleLabel.text = menuItem.name
         priceLabel.text = String(format: "$%.2f", menuItem.price)
         detailTextLabel.text = menuItem.detailText
-    }
+        MenuController.shared.fetchImage(url: menuItem.imageURL) { (image) in
+            guard let image = image else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.imageView.image = image
+                }
+            }
+        }
 
 }

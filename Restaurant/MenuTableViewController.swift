@@ -10,6 +10,7 @@ import UIKit
 
 class MenuTableViewController: UITableViewController {
     
+    
     //let menuController = MenuController()
     var menuItems = [MenuItem]()
     let menuController = MenuController()
@@ -71,6 +72,24 @@ class MenuTableViewController: UITableViewController {
         let menuItem = menuItems[indexPath.row]
         cell.textLabel?.text = menuItem.name
         cell.detailTextLabel?.text  = "$\(menuItem.price)"
+        menuController.fetchImage(url: menuItem.imageURL) { (image) in
+            guard let image = image else {
+                return
+            }
+            DispatchQueue.main.async {
+                if let currentIndexPath = self.tableView.indexPath(for: cell),
+                    currentIndexPath != indexPath {
+                    return
+                }
+                cell.imageView?.image = image
+                cell.setNeedsLayout()
+            }
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     /*
     // Override to support conditional editing of the table view.

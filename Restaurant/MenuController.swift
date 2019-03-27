@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class MenuController {
     let baseURL = URL(string: "http://localhost:8090")!
@@ -73,6 +74,21 @@ func fetchMenuItems(forCategory categoryName: String,
     }
 task.resume()    
 }
+    
+    func fetchImage(url: URL, completion: @escaping (UIImage?) -> Void) {
+        let task = URLSession.shared.dataTask(with: url) {
+            (data: Data?, response: URLResponse?, error: Error?) in
+            
+            if let data = data,
+                let image = UIImage(data: data) {
+                print("image was accessed: \(image)")
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
 
 func submitOrder(forMenuIDs menuIDs: [Int],
                  completion: @escaping(Int?) -> Void) {
